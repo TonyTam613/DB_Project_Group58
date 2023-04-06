@@ -9,7 +9,7 @@ import java.util.List;
 public class HotelService {
 
     public List<Hotel> getHotels() throws Exception {
-        String sql = "SELECT * FROM hotel";
+        String sql = "SELECT * FROM hotel;";
 
         ConnectionDB db = new ConnectionDB();
 
@@ -54,12 +54,12 @@ public class HotelService {
         ConnectionDB db = new ConnectionDB();
         System.out.println(hotel.getId());
 
-        String insertRoomQuery = "INSERT INTO hotel (hotel_id,chain_id,number_of_room,email,phone,category,address,city) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String insertHotelQuery = "INSERT INTO hotel (hotel_id,chain_id,number_of_room,email,phone,category,address,city) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
         try {
             con = db.getConnection();
 
-            PreparedStatement stmt = con.prepareStatement(insertRoomQuery);
+            PreparedStatement stmt = con.prepareStatement(insertHotelQuery);
 
             stmt.setInt(1, hotel.getId());
             stmt.setInt(2, hotel.getChainId());
@@ -92,7 +92,7 @@ public class HotelService {
         Connection con = null;
         String message = "";
 
-        String sql = "UPDATE hotel SET hotel_id=?, chain_id=?, number_of_room=?, email=?, phone=?, category=?, address=?, city=? WHERE id=?";
+        String sql = "UPDATE hotel SET hotel_id=?, chain_id=?, number_of_room=?, email=?, phone=?, category=?, address=?, city=? WHERE hotel_id=?;";
 
 
         ConnectionDB db = new ConnectionDB();

@@ -9,7 +9,7 @@ import java.util.List;
 public class RoomService {
 
     public List<Room> getRooms() throws Exception {
-        String sql = "SELECT * FROM room";
+        String sql = "SELECT * FROM room;";
 
         ConnectionDB db = new ConnectionDB();
 
@@ -22,7 +22,7 @@ public class RoomService {
 
             while (rs.next()) {
                 Room room = new Room(
-                        rs.getInt("id"),
+                        rs.getInt("room_id"),
                         rs.getBigDecimal("price"),
                         rs.getString("capacity"),
                         rs.getString("room_view"),
@@ -90,7 +90,7 @@ public class RoomService {
         Connection con = null;
         String message = "";
 
-        String sql = "UPDATE room SET room_id=?, hotel_id=?, price=?, capacity=?, room_view=?, extendability=?, room_condition=? WHERE id=?";
+        String sql = "UPDATE room SET room_id=?, hotel_id=?, price=?, capacity=?, room_view=?, extendability=?, room_condition=? WHERE room_id=?;";
 
 
         ConnectionDB db = new ConnectionDB();
