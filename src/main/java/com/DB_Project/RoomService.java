@@ -86,6 +86,42 @@ public class RoomService {
         return message;
     }
 
+    public String deleteRoom(Integer id) throws Exception {
+        Connection con = null;
+        String message = "";
+
+        // sql query
+        String sql = "DELETE FROM room WHERE room_id = ?;";
+
+        // database connection object
+        ConnectionDB db = new ConnectionDB();
+
+        // try connect to database, catch any exceptions
+        try {
+            con = db.getConnection();
+
+            // prepare statement
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            // set every ? of statement
+            stmt.setInt(1, id);
+
+            // execute the query
+            stmt.executeUpdate();
+
+            // close the statement
+            stmt.close();
+
+        } catch (Exception e) {
+            message = "Error while delete room: " + e.getMessage();
+        } finally {
+            if (con != null) con.close();
+            if (message.equals("")) message = "Room successfully deleted!";
+        }
+
+        return message;
+    }
+
     public String updateRoom(Room room) throws Exception {
         Connection con = null;
         String message = "";

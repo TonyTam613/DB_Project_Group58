@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerService {
+public class CustomerService {
 
-    public List<Manager> getManagers() throws Exception {
-        String sql = "SELECT * FROM manager;";
+    public List<Customer> getCustomers() throws Exception {
+        String sql = "SELECT * FROM customer;";
 
         ConnectionDB db = new ConnectionDB();
 
-        List<Manager> managers = new ArrayList<Manager>();
+        List<Customer> customers = new ArrayList<Customer>();
 
         try (Connection con = db.getConnection()) {
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -21,15 +21,16 @@ public class ManagerService {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Manager manager = new Manager(
-                        rs.getInt("manager_id"),
-                        rs.getInt("hotel_id"),
-                        rs.getString("manager_name"),
+                Customer customer = new Customer(
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
                         rs.getString("address"),
-                        rs.getInt("SSN")
+                        rs.getString("city"),
+                        rs.getInt("SSN"),
+                        rs.getDate("date_of_registration")
                 );
 
-                managers.add(manager);
+                customers.add(customer);
 
             }
 
@@ -38,31 +39,32 @@ public class ManagerService {
             con.close();
             db.close();
 
-            return managers;
+            return customers;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    public String createManager(Manager manager) throws Exception {
+    public String createCustomer(Customer customer) throws Exception {
         String message = "";
         Connection con = null;
 
         ConnectionDB db = new ConnectionDB();
-        System.out.println(manager.getId());
+        System.out.println(customer.getId());
 
-        String insertManagerQuery = "INSERT INTO manager (manager_id,hotel_id,manager_name,address,SSN) VALUES (?, ?, ?, ?, ?);";
+        String insertCustomerQuery = "INSERT INTO customer (customer_id, customer_name, address, city, SSN, date_of_registration) VALUES (?, ?, ?, ?, ?, ?);";
 
         try {
             con = db.getConnection();
 
-            PreparedStatement stmt = con.prepareStatement(insertManagerQuery);
+            PreparedStatement stmt = con.prepareStatement(insertCustomerQuery);
 
-            stmt.setInt(1, manager.getId());
-            stmt.setInt(2, manager.getHotelId());
-            stmt.setString(3, manager.getName());
-            stmt.setString(4, manager.getAddress());
-            stmt.setInt(5, manager.getSSN());
+            stmt.setInt(1, customer.getId());
+            stmt.setString(2, customer.getName());
+            stmt.setString(3, customer.getAddress());
+            stmt.setString(4, customer.getCity());
+            stmt.setInt(5, customer.getSSN());
+            stmt.setDate(6, customer.getDOR());
 
             int output = stmt.executeUpdate();
             System.out.println(output);
@@ -70,24 +72,24 @@ public class ManagerService {
             stmt.close();
             db.close();
         } catch (Exception e) {
-            message = "Error while inserting manager" + e.getMessage();
+            message = "Error while inserting customer" + e.getMessage();
         } finally {
             if (con != null) {
                 con.close();
             }
             if (message.equals("")) {
-                message = "Manager successfully inserted";
+                message = "Customer successfully inserted";
             }
         }
         return message;
     }
 
-    public String deleteManager(Integer id) throws Exception {
+    public String deleteCustomer(Integer id) throws Exception {
         Connection con = null;
         String message = "";
 
         // sql query
-        String sql = "DELETE FROM manager WHERE manager_id = ?;";
+        String sql = "DELETE FROM customer WHERE customer_id = ?;";
 
         // database connection object
         ConnectionDB db = new ConnectionDB();
@@ -109,20 +111,20 @@ public class ManagerService {
             stmt.close();
 
         } catch (Exception e) {
-            message = "Error while delete manager: " + e.getMessage();
+            message = "Error while delete customer: " + e.getMessage();
         } finally {
             if (con != null) con.close();
-            if (message.equals("")) message = "Manager successfully deleted!";
+            if (message.equals("")) message = "Customer successfully deleted!";
         }
 
         return message;
     }
 
-    public String updateManager(Manager manager) throws Exception {
+    public String updateCustomer(Customer customer) throws Exception {
         Connection con = null;
         String message = "";
 
-        String sql = "UPDATE manager SET manager_id=?, hotel_id=?, manager_name=?, address=?, SSN=? WHERE manager_id=?;";
+        String sql = "UPDATE customer SET customer_id=?, customer_name=?, address=?, city=?, SSN=?, date_of_registration=? WHERE customer_id=?;";
 
 
         ConnectionDB db = new ConnectionDB();
@@ -132,28 +134,27 @@ public class ManagerService {
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, manager.getId());
-            stmt.setInt(2, manager.getHotelId());
-            stmt.setString(3, manager.getName());
-            stmt.setString(4, manager.getAddress());
-            stmt.setInt(5, manager.getSSN());
-            stmt.setInt(6, manager.getId());
+            stmt.setInt(1, customer.getId());
+            stmt.setString(2, customer.getName());
+            stmt.setString(3, customer.getAddress());
+            stmt.setString(4, customer.getCity());
+            stmt.setInt(5, customer.getSSN());
+            stmt.setDate(6, customer.getDOR());
+            stmt.setInt(7, customer.getId());
 
             stmt.executeUpdate();
             stmt.close();
 
         } catch (Exception e) {
-            message = "Error while updating manager: " + e.getMessage();
+            message = "Error while updating customer: " + e.getMessage();
         } finally {
             if (con != null) {
                 con.close();
             }
             if (message.equals("")) {
-                message = "Manager successfully updated";
+                message = "customer successfully updated";
             }
         }
-
         return message;
     }
-
 }

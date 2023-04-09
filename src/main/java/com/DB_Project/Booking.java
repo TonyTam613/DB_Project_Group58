@@ -7,16 +7,18 @@ public class Booking {
     private Integer room_id;
     private Integer employee_id;
     private Integer customer_id;
-    private Date date_of_booking;
-    private Integer length_of_stay;
+    private Date start_date;
+    private Date end_date;
+    private String current_status;
 
-    public Booking(Integer booking_id, Integer room_id, Integer employee_id, Integer customer_id, Date date_of_booking, Integer length_of_stay) {
-        this.id = booking_id;
+    public Booking(Integer id, Integer room_id, Integer employee_id, Integer customer_id, Date start_date, Date end_date, String current_status) {
+        this.id = id;
         this.room_id = room_id;
         this.employee_id = employee_id;
         this.customer_id = customer_id;
-        this.date_of_booking = date_of_booking;
-        this.length_of_stay = length_of_stay;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.current_status = current_status;
     }
 
     public Integer getId() {
@@ -35,13 +37,11 @@ public class Booking {
         return customer_id;
     }
 
-    public Date getDateOfBooking() {
-        return date_of_booking;
-    }
+    public Date getStartDate() { return start_date; }
 
-    public Integer getLengthOfStay() {
-        return length_of_stay;
-    }
+    public Date getEndDate() { return end_date; }
+
+    public String getCurrentStatus() { return current_status; }
 
     public void setBookingId(Integer booking_id) {
         this.id = booking_id;
@@ -59,11 +59,14 @@ public class Booking {
         this.customer_id = customer_id;
     }
 
-    public void setDateOfBooking(Date date_of_booking) {
-        this.date_of_booking = date_of_booking;
-    }
+    public void setStartDate(Date start_date) { this.start_date = start_date; }
 
-    public void setLengthOfStay(Integer length_of_stay) {
-        this.length_of_stay = length_of_stay;
+    public void setEndDate(Date end_date) { this.end_date = end_date; }
+
+    public void setCurrentStatus(String current_status) { this.current_status = current_status; }
+
+    @Override
+    public String toString() {
+        return "booking_id: " + id.toString();
     }
 }
