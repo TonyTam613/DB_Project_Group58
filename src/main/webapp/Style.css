@@ -75,10 +75,9 @@ header{
     position: relative;
     width: 400px;
     height: 550px;
-    background: transparent;
+    background: white;
     border: 2px solid rgba(255,255,255,.5);
     border-radius: 20px;
-    backdrop-filter: blur(20px);
     box-shadow: 0 0 30px rgba(0,0,0,.5);
     display: flex;
     justify-content: center;
@@ -122,7 +121,7 @@ header{
 .input-box input{
     width: 100%;
     height: 100%;
-    background: transparent;
+    background: white;
     border: none;
     outline: none;
     font-size: 1em;
@@ -144,8 +143,48 @@ header{
     font-weight: 500;
 }
 
+.text-box{
+    width: 50%;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+.text-box hi{
+    font-size: 92px;
+}
+.text-box p{
+    margin: 10px 0 40px;
+    font-size: 14px;
+    color: deepskyblue;
+}
 
+.container .input{
+    border: 0;
+    outline: none;
+    color: darkmagenta;
+}
 
+.search_wrap{
+    width: 500px;
+    margin: 30px auto;
+}
+
+.search_wrap .search_box{
+    position: relative;
+    width: 500px;
+    height: 60px;
+}
+.search_wrap .search_box .input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+}
 
 
 

@@ -25,31 +25,16 @@
     <div class="wrapper">
         <div class="form-box login">
             <h2>Login</h2>
-            <form action = "#">
+            <form action = "VerifyEmployee.jsp">
                 <div class="input-box">
                     <span class="icon"></span>
-                    <input type="SIN/SSN" required>
-                    <label>SIN/SSN</label>
+                    <input name="employee_SSN" id="employee_SSN" type="SIN/SSN" required>
+                    <label for="employee_SSN">SIN/SSN</label>
                 </div>
                 <div class="input-box">
                     <span class="icon"></span>
-                    <input type="NAME" required>
-                    <label>NAME</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"></span>
-                    <input type="email" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"></span>
-                    <input type="Hotel" required>
-                    <label>HOTEL</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"></span>
-                    <input type="employee_id" required>
-                    <label>EMPLOYEE_ID</label>
+                    <input name="employee_id" id="employee_id" type="employee_id" required>
+                    <label for="employee_id">EMPLOYEE_ID</label>
                 </div>
                 <button type="submit" class="btn">LOGIN</button>
             </form>

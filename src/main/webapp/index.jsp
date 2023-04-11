@@ -8,15 +8,20 @@
 </head>
 
 
-<body>
-    <header>
-        <h2 class = "logo">HOME PAGE</h2>
-        <nav class = "navigations">
-            <a href="Employee.jsp">Employee</a>
-            <a href="Customer.jsp">Customer</a>
-            <a href="#">Admin</a>
+<body class ="index">
+<header>
+    <h2 class = "logo">HOME PAGE</h2>
+    <nav class = "navigations">
+        <a href="Employee.jsp">Employee</a>
+        <a href="Customer.jsp">Customer</a>
+        <a href="#">Admin</a>
+    </nav>
+</header>
 
-        </nav>
-    </header>
+<div class ="text-box">
+    <hi>Hotel Booking Centre</hi>
+    <p>Book the best hotels and rooms around the world and have the best time</p>
+
+</div>
 </body>
 </html>

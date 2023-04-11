@@ -1,5 +1,6 @@
 package com.DB_Project;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -123,6 +124,45 @@ public class ChainService {
         return message;
     }
 
+    public Chain getChain(Integer id) throws Exception {
+        String sql = "SELECT * FROM hotel_chain WHERE chain_id=?;";
+
+        ConnectionDB db = new ConnectionDB();
+
+        Chain result = new Chain(1, 1, "1", BigDecimal.valueOf(1), "1", "1", "1");
+
+        try (Connection con = db.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Chain chain = new Chain(
+                        rs.getInt("chain_id"),
+                        rs.getInt("number_of_hotels"),
+                        rs.getString("email"),
+                        rs.getBigDecimal("phone"),
+                        rs.getString("address"),
+                        rs.getString("city"),
+                        rs.getString("chain_name")
+                );
+
+                result = chain;
+
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+            db.close();
+
+            return result;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
     public String updateChain(Chain chain) throws Exception {
         Connection con = null;
         String message = "";

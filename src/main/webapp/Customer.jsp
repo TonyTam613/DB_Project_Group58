@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Employee bookings</title>
+    <title>Customer Page</title>
     <link rel = "stylesheet" href="Style.css">
 </head>
 
@@ -25,31 +25,11 @@
 <div class="wrapper">
     <div class="form-box login">
         <h2>Login</h2>
-        <form action = "#">
+        <form name="customer-form" action = "VerifyCustomer.jsp" method="POST">
             <div class="input-box">
                 <span class="icon"></span>
-                <input type="SIN/SSN" required>
-                <label>SIN/SSN</label>
-            </div>
-            <div class="input-box">
-                <span class="icon"></span>
-                <input type="NAME" required>
-                <label>NAME</label>
-            </div>
-            <div class="input-box">
-                <span class="icon"></span>
-                <input type="email" required>
-                <label>Email</label>
-            </div>
-            <div class="input-box">
-                <span class="icon"></span>
-                <input type="Address" required>
-                <label>Address</label>
-            </div>
-            <div class="input-box">
-                <span class="icon"></span>
-                <input type="Date" required>
-                <label>Date</label>
+                <input id="customer_SSN" name="customer_SSN" type="SIN/SSN" required>
+                <label for="customer_SSN" >SIN/SSN</label>
             </div>
             <button type="submit" class="btn">LOGIN</button>
         </form>

@@ -21,6 +21,20 @@ public class Booking {
         this.current_status = current_status;
     }
 
+    public Booking(Integer room_id, Integer customer_id, Date start_date, Date end_date, String current_status) {
+        this.room_id = room_id;
+        this.customer_id = customer_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.current_status = current_status;
+    }
+
+    public Booking(Integer id, Integer employee_id, String current_status) {
+        this.id = id;
+        this.employee_id = employee_id;
+        this.current_status = current_status;
+    }
+
     public Integer getId() {
         return id;
     }

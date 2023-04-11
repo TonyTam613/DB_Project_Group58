@@ -1,5 +1,6 @@
 package com.DB_Project;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -86,6 +87,47 @@ public class HotelService {
             }
         }
         return message;
+    }
+
+    public Hotel getHotel(Integer id) throws Exception {
+        String sql = "SELECT * FROM hotel WHERE hotel_id=?;";
+
+        ConnectionDB db = new ConnectionDB();
+
+        Hotel result = new Hotel(1, 1, "1", BigDecimal.valueOf(1), "1", 1, "1", "1");
+
+        try (Connection con = db.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Hotel hotel = new Hotel(
+                        rs.getInt("hotel_id"),
+                        rs.getInt("number_of_room"),
+                        rs.getString("email"),
+                        rs.getBigDecimal("phone"),
+                        rs.getString("category"),
+                        rs.getInt("chain_id"),
+                        rs.getString("address"),
+                        rs.getString("city")
+                );
+
+                result = hotel;
+
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+            db.close();
+
+            return result;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     public String deleteHotel(Integer id) throws Exception {

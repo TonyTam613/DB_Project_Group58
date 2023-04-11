@@ -24,7 +24,7 @@ public class RoomService {
                 Room room = new Room(
                         rs.getInt("room_id"),
                         rs.getBigDecimal("price"),
-                        rs.getString("capacity"),
+                        rs.getInt("capacity"),
                         rs.getString("room_view"),
                         rs.getString("extendability"),
                         rs.getString("room_condition"),
@@ -63,7 +63,7 @@ public class RoomService {
             stmt.setInt(1, room.getId());
             stmt.setInt(2, room.getHotelId());
             stmt.setBigDecimal(3, room.getPrice());
-            stmt.setString(4, room.getCapacity());
+            stmt.setInt(4, room.getCapacity());
             stmt.setString(5, room.getView());
             stmt.setString(6, room.getExtendability());
             stmt.setString(7, room.getCondition());
@@ -139,7 +139,7 @@ public class RoomService {
             stmt.setInt(1, room.getId());
             stmt.setInt(2, room.getHotelId());
             stmt.setBigDecimal(3, room.getPrice());
-            stmt.setString(4, room.getCapacity());
+            stmt.setInt(4, room.getCapacity());
             stmt.setString(5, room.getView());
             stmt.setString(6, room.getExtendability());
             stmt.setString(7, room.getCondition());

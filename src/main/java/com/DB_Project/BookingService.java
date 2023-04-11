@@ -3,6 +3,7 @@ package com.DB_Project;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,38 +53,111 @@ public class BookingService {
 
         ConnectionDB db = new ConnectionDB();
         System.out.println(booking.getId());
+        boolean valid = true;
 
-        String insertBookingQuery = "INSERT INTO booking (booking_id, room_id, employee_id, customer_id, start_date, end_date, current_status) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        List<Booking> existingBookings = getBookings();
 
-        try {
-            con = db.getConnection();
-
-            PreparedStatement stmt = con.prepareStatement(insertBookingQuery);
-
-            stmt.setInt(1, booking.getId());
-            stmt.setInt(2, booking.getRoomId());
-            stmt.setInt(3, booking.getEmployeeId());
-            stmt.setInt(4, booking.getCustomerId());
-            stmt.setDate(5, booking.getStartDate());
-            stmt.setDate(6, booking.getEndDate());
-            stmt.setString(7, booking.getCurrentStatus());
-
-            int output = stmt.executeUpdate();
-            System.out.println(output);
-
-            stmt.close();
-            db.close();
-        } catch (Exception e) {
-            message = "Error while inserting booking" + e.getMessage();
-        } finally {
-            if (con != null) {
-                con.close();
-            }
-            if (message.equals("")) {
-                message = "Booking successfully inserted";
+        for (Booking book : existingBookings) {
+            if (booking.getRoomId().equals(book.getRoomId())) {
+                if (booking.getStartDate().compareTo(book.getStartDate()) < 0 && booking.getEndDate().compareTo(book.getEndDate()) > 0) {
+                    valid = false;
+                } else if (booking.getStartDate().compareTo(book.getStartDate()) > 0 || booking.getEndDate().compareTo(book.getEndDate()) < 0) {
+                    valid = false;
+                }
             }
         }
-        return message;
+
+        if (!valid) {
+            throw new SQLException("Room unavailable for that booking");
+        } else {
+            String insertBookingQuery = "INSERT INTO booking (booking_id, room_id, employee_id, customer_id, start_date, end_date, current_status) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+            try {
+                con = db.getConnection();
+
+                PreparedStatement stmt = con.prepareStatement(insertBookingQuery);
+
+                stmt.setInt(1, booking.getId());
+                stmt.setInt(2, booking.getRoomId());
+                stmt.setInt(3, booking.getEmployeeId());
+                stmt.setInt(4, booking.getCustomerId());
+                stmt.setDate(5, booking.getStartDate());
+                stmt.setDate(6, booking.getEndDate());
+                stmt.setString(7, booking.getCurrentStatus());
+
+                int output = stmt.executeUpdate();
+                System.out.println(output);
+
+                stmt.close();
+                db.close();
+            } catch (Exception e) {
+                message = "Error while inserting booking" + e.getMessage();
+            } finally {
+                if (con != null) {
+                    con.close();
+                }
+                if (message.equals("")) {
+                    message = "Booking successfully inserted";
+                }
+            }
+            return message;
+        }
+    }
+
+    public String createBookingNoEmp(Booking booking) throws Exception {
+        String message = "";
+        Connection con = null;
+
+        ConnectionDB db = new ConnectionDB();
+        System.out.println(booking.getId());
+
+        String insertBookingQuery = "INSERT INTO booking (room_id, customer_id, start_date, end_date, current_status) VALUES (?, ?, ?, ?, ?);";
+
+        boolean valid = true;
+
+        List<Booking> existingBookings = getBookings();
+
+        for (Booking book : existingBookings) {
+            if (booking.getRoomId().equals(book.getRoomId())) {
+                if (booking.getStartDate().compareTo(book.getStartDate()) < 0 && booking.getEndDate().compareTo(book.getEndDate()) > 0) {
+                    valid = false;
+                } else if ((booking.getStartDate().compareTo(book.getStartDate()) > 0 && booking.getStartDate().compareTo(book.getEndDate()) < 0) || (booking.getEndDate().compareTo(book.getStartDate()) > 0 && booking.getEndDate().compareTo(book.getEndDate()) < 0)) {
+                    valid = false;
+                }
+            }
+        }
+
+        if (!valid) {
+            throw new SQLException("Room unavailable for that booking");
+        } else {
+            try {
+                con = db.getConnection();
+
+                PreparedStatement stmt = con.prepareStatement(insertBookingQuery);
+
+                stmt.setInt(1, booking.getRoomId());
+                stmt.setInt(2, booking.getCustomerId());
+                stmt.setDate(3, booking.getStartDate());
+                stmt.setDate(4, booking.getEndDate());
+                stmt.setString(5, booking.getCurrentStatus());
+
+                int output = stmt.executeUpdate();
+                System.out.println(output);
+
+                stmt.close();
+                db.close();
+            } catch (Exception e) {
+                message = "Error while inserting booking" + e.getMessage();
+            } finally {
+                if (con != null) {
+                    con.close();
+                }
+                if (message.equals("")) {
+                    message = "Booking successfully inserted";
+                }
+            }
+            return message;
+        }
     }
 
     public String deleteBooking(Integer id) throws Exception {
@@ -144,6 +218,41 @@ public class BookingService {
             stmt.setDate(6, booking.getEndDate());
             stmt.setString(7, booking.getCurrentStatus());
             stmt.setInt(8, booking.getId());
+
+            stmt.executeUpdate();
+            stmt.close();
+
+        } catch (Exception e) {
+            message = "Error while updating booking: " + e.getMessage();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+            if (message.equals("")) {
+                message = "Booking successfully updated";
+            }
+        }
+        return message;
+    }
+
+    public String empUpdateBooking(Booking booking) throws Exception {
+        Connection con = null;
+        String message = "";
+
+        String sql = "UPDATE booking SET booking_id=?, employee_id=?, current_status=? WHERE booking_id=?;";
+
+
+        ConnectionDB db = new ConnectionDB();
+
+        try {
+            con = db.getConnection();
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, booking.getId());
+            stmt.setInt(2, booking.getEmployeeId());
+            stmt.setString(3, booking.getCurrentStatus());
+            stmt.setInt(4, booking.getId());
 
             stmt.executeUpdate();
             stmt.close();

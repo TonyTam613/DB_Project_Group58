@@ -14,7 +14,8 @@
 <%@ page import="java.util.ArrayList" %>
 
 <%
-    Integer id = Integer.valueOf(request.getParameter("id"));
+    Integer ssn = Integer.valueOf(request.getParameter("customer_SSN"));
+
 
     Message msg;
     boolean worked = false;
@@ -26,15 +27,18 @@
 
         boolean found = false;
         for (int i = 0; i < customerList.size(); i++) {
-            if (customerList.get(i).getId() == id) {
+            if (customerList.get(i).getSSN().equals(ssn)) {
                 found = true;
+                session.setAttribute("customer_id", customerList.get(i).getId());
             }
         }
-        msg = new Message("Success", "User found and signing in");
+
         if (found) {
-            response.sendRedirect("booking.jsp");
+            msg = new Message("Success", "User found and signing in");
+            response.sendRedirect("Customer_Search_page.jsp");
         } else {
-            response.sendRedirect("signup.jsp");
+            msg = new Message("Error", "User does not exist");
+            response.sendRedirect("index.jsp");
         }
     } catch (Exception e) {
         worked = false;
@@ -44,6 +48,7 @@
 
     ArrayList<Message> messages = new ArrayList<Message>();
     messages.add(msg);
+    session.setAttribute("messages", messages);
     if (!worked) {
         response.sendRedirect("index.jsp");
     }
